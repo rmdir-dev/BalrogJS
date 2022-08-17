@@ -1,1 +1,1 @@
-# BalrogJS
+# BalrogFramework
