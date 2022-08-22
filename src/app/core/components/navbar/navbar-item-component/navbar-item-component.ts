@@ -11,7 +11,6 @@ export enum NavbarItemType
 @component({
     name: 'navbar-item-component',
     template: 'navbar-item-component.html',
-    dirname: __dirname,
     extends: 'li'
 })
 export class NavbarItemComponent extends Component
@@ -19,7 +18,7 @@ export class NavbarItemComponent extends Component
     item?: NavbarItemConfig;
 
     constructor(value: string, route: string) {
-        super('li');
+        super();
     }
 
     onInit() {

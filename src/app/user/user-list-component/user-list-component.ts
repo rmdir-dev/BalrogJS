@@ -13,7 +13,6 @@ import {Router} from "../../../framework/routing/router";
 @component({
     name: 'user-list-component',
     template: 'user-list-component.html',
-    dirname: __dirname
 })
 export class UserListComponent extends Component
 {
@@ -26,7 +25,7 @@ export class UserListComponent extends Component
         private userService: UserService,
         private router: Router,
     ) {
-        super('div');
+        super();
         this.test = "asdf1234";
         this.testattr2 = { testVar: "test1234" };
     }

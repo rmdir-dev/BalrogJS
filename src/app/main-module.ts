@@ -15,6 +15,7 @@ import {ItemService} from "./core/services/item-service";
 import {AuthService} from "./core/services/auth-service";
 import {LoginComponent} from "./user/login-component/login-component";
 import {JwtInterceptor} from "./core/interceptors/JwtInterceptor";
+import {BasketComponent} from "./item/basket-component/basket-component";
 
 function getToken()
 {
@@ -31,6 +32,7 @@ function getToken()
         { component: TableComponent },
         { component: TableItemComponent },
         { component: LoginComponent },
+        { component: BasketComponent },
     ],
     providers: [
         { service: HttpService },

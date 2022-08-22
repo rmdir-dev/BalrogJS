@@ -7,7 +7,6 @@ import {User} from "../../core/models/user-model";
 @component({
     name: 'user-view-component',
     template: 'user-view-component.html',
-    dirname: __dirname
 })
 export class UserViewComponent extends Component {
     user: User;

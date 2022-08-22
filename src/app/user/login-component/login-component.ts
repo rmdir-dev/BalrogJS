@@ -9,7 +9,6 @@ import {AuthService} from "../../core/services/auth-service";
 @component({
     name: 'login-component',
     template: 'login-component.html',
-    dirname: __dirname
 })
 export class LoginComponent extends Component {
     usernamectl: FormControl;

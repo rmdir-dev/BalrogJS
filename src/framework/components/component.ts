@@ -14,16 +14,10 @@ export interface Declarer
 
 export abstract class Component
 {
-    protected html: HTMLElement|any;
     tagName: string;
-    private events: Map<string, EventConfig>
 
 
-    constructor(tag: string = 'div') {
-        // this.html = document.createElement(tag);
-        this.html = {}  as HTMLElement;
-        this.tagName = '';
-        this.events = new Map<string, EventConfig>();
+    constructor() {
     }
 
     onInit(): void
@@ -32,43 +26,8 @@ export abstract class Component
     onChange(): void
     {}
 
-    onRender(): HTMLElement
-    {
-        return this.html;
-    }
-
-    onDestroy()
-    {
-    }
-
-    attachChildComponent(component: Component)
-    {
-        this.html.appendChild(component.html);
-    }
-
-    removeChildComponent(component: Component)
-    {
-        this.html.removeChild(component.html)
-    }
-
-    addEventToId(config: EventConfig)
-    {
-        this.events.set(config.id, config);
-    }
-
-    generateEvents(element: Element)
-    {
-        for(const key in this.events)
-        {
-            const listener = element.querySelector(key);
-            const event = this.events.get(key);
-
-            if(listener && event)
-            {
-                listener.addEventListener(event.eventType, event.eventCb);
-            }
-        }
-    }
+    onDestroy(): void
+    {}
 }
 
 export interface EventConfig
@@ -82,7 +41,7 @@ export interface ComponentConfig
 {
     name: string;
     template: string;
-    dirname: string;
+    // dirname: string;
     extends?: string;
 }
 
@@ -101,7 +60,8 @@ export function component(config: ComponentConfig) {
             const extension = getHtmlElementType(config.extends);
             const tmpClass = class HtmlComponentWrapper extends extension {
                 component: Component;
-                static htmlTemplateFile: string;
+                // @deprecated
+                // static htmlTemplateFile: string;
                 htmlFile: string;
                 initialized: boolean;
                 private objectSet: Set<string>;
@@ -135,32 +95,14 @@ export function component(config: ComponentConfig) {
                     // Initialize component.
                     this.component.onInit();
 
-                    // has template and unloaded template
-                    if(config.template && !HtmlComponentWrapper.htmlTemplateFile)
+                    // use timeout so the customComponent is constructed before parsing.
+                    // else it would crash while constructing the element as it should not have children.
+                    setTimeout(() =>
                     {
-                        fetch(`${config.dirname}/${config.template}`)
-                            .then((res) =>
-                            {
-                                res.text().then((text) =>
-                                {
-                                    HtmlComponentWrapper.htmlTemplateFile = text;
+                        this.getHtmlElement();
+                    }, 1);
 
-                                    this.getHtmlElement();
-                                })
-                            }).catch((err) =>
-                            {
-                                this.getHtmlElement();
-                            });
-                    } else
-                    {
-                        // use timeout so the customComponent is constructed before parsing.
-                        // else it would crash while constructing the element as it should not have children.
-                        setTimeout(() =>
-                        {
-                            this.getHtmlElement();
-                        }, 1);
-                    }
-
+                    // observe to know when the object is destroyed.
                     observe(this);
                     this.addEventListener('disconnected', () => {
                         this.component.onDestroy();
@@ -182,20 +124,12 @@ export function component(config: ComponentConfig) {
 
                 public getHtmlElement()
                 {
-                    this.htmlFile = HtmlComponentWrapper.htmlTemplateFile;
-
-                    // TODO temporary when all component uses template => set this.component.innerHTML = processedTemplate
-                    if(!this.htmlFile || this.htmlFile === '')
-                    {
-                        this.appendChild(this.component.onRender());
-                        return;
-                    }
+                    this.htmlFile = config.template;
 
                     const processedTemplate = TemplateProcessor.processTemplate(this.htmlFile, this.component);
                     this.innerHTML = processedTemplate.template;
                     this.initialized = true;
 
-                    this.component.generateEvents(this);
                     this.__processRoutes();
                     this.__processFormControls();
                     this.__injectEventFunctions(processedTemplate.events);
@@ -275,6 +209,11 @@ export function component(config: ComponentConfig) {
                         {
                             eventELement.addEventListener(event.eventName, (e) =>
                             {
+                                if(e.preventDefault)
+                                {
+                                    e.preventDefault();
+                                }
+
                                 event.eventCb();
                             })
                         }

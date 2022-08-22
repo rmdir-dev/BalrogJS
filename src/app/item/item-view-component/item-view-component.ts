@@ -7,7 +7,6 @@ import {Item} from "../../core/models/item-model";
 @component({
     name: 'item-view-component',
     template: 'item-view-component.html',
-    dirname: __dirname
 })
 export class ItemViewComponent extends Component {
     item: Item;

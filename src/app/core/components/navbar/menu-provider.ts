@@ -36,6 +36,12 @@ export const navbarConfig: NavbarConfig =
             groupSide: NavbarGroupSide.RIGHT,
             items: [
                 {
+                    value: 'Basket',
+                    route: '/basket',
+                    itemType: NavbarItemType.BUTTON,
+                    privileges: NavbarPrivilege.AUTH,
+                },
+                {
                     value: 'Users',
                     route: '/users',
                     itemType: NavbarItemType.BUTTON,

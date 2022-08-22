@@ -7,7 +7,6 @@ import {FormControl} from "../../../../../framework/forms/form-control";
 @component({
     name: 'table-component',
     template: 'table-component.html',
-    dirname: __dirname
 })
 export class TableComponent extends Component
 {
@@ -15,7 +14,7 @@ export class TableComponent extends Component
     formGroup: FormGroup;
 
     constructor(private config: TableConfig) {
-        super('table');
+        super();
     }
 
     onInit() {
@@ -27,6 +26,11 @@ export class TableComponent extends Component
         this.config.findDataCb()
             .subscribe((data) =>
             {
+                if(!data)
+                {
+                    return;
+                }
+
                 if(this.config.sort)
                 {
                     const sortData = this.config.sort;

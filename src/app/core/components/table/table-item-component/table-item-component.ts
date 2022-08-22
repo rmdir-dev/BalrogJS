@@ -7,7 +7,6 @@ import {Entity} from "../../../models/entity-model";
 @component({
     name: 'table-item-component',
     template: 'table-item-component.html',
-    dirname: __dirname,
     extends: 'td'
 })
 export class TableItemComponent extends Component

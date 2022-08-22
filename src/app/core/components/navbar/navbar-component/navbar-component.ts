@@ -9,7 +9,6 @@ import {AuthService} from "../../../services/auth-service";
 @component({
     name: 'navbar-component',
     template: 'navbar-component.html',
-    dirname: __dirname
 })
 export class NavBarComponent extends Component
 {
@@ -22,7 +21,7 @@ export class NavBarComponent extends Component
     constructor(
         private authService: AuthService
     ) {
-        super('nav');
+        super();
         this.config = navbarConfig;
     }
 }

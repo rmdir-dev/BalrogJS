@@ -15,5 +15,7 @@ export class Balrog
     initBalrog(mainModule: IModule)
     {
         mainModule.init(this.router);
+
+        this.router.goToRoute(window.location.pathname);
     }
 }

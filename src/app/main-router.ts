@@ -7,6 +7,7 @@ import {ItemListComponent} from "./item/item-list-component/item-list-component"
 import {ItemFormComponent} from "./item/item-form-component/item-form-component";
 import {ItemViewComponent} from "./item/item-view-component/item-view-component";
 import {LoginComponent} from "./user/login-component/login-component";
+import {BasketComponent} from "./item/basket-component/basket-component";
 
 export const routes: Route[] = [
 
@@ -23,6 +24,7 @@ export const routes: Route[] = [
     { name: "/users/:id", component: UserViewComponent },
     { name: "/users/:id/edit", component: UserFormComponent },
     { name: "/users/add", component: UserFormComponent },
+    { name: "/basket", component: BasketComponent },
 
     //------------------------------------------------------------------------
     // ITEMS

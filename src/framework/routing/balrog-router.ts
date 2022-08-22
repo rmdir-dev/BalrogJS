@@ -111,7 +111,8 @@ export class BalrogRouter
         
         const rte = route.split(/(\/[a-z\-\/]+\/)([0-9]+)/).filter((itm) => itm != '');
         let activeRoute = this.routes.get(rte[0]);
-        const routee: string = rte[0];
+        const urlRoute: string = rte[0];
+        window.history.pushState({}, '', route);
 
         this.params.clear();
 

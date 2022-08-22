@@ -4,7 +4,6 @@ import {component, Component} from "../../framework/components/component";
 @component({
     name: 'home-component',
     template: 'home-component.html',
-    dirname: __dirname
 })
 export class HomeComponent extends Component
 {
@@ -13,7 +12,7 @@ export class HomeComponent extends Component
 
 
     constructor() {
-        super('div');
+        super();
         this.testattr = "HELLO WORLD"
     }
 

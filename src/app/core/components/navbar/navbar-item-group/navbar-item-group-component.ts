@@ -12,7 +12,6 @@ export enum NavbarGroupSide {
 @component({
     name: 'navbar-item-group-component',
     template: 'navbar-item-group-component.html',
-    dirname: __dirname,
     extends: 'ul'
 })
 export class NavbarItemGroupComponent extends Component
@@ -26,7 +25,7 @@ export class NavbarItemGroupComponent extends Component
     constructor(
         private authService: AuthService
     ) {
-        super('ul');
+        super();
     }
 
     onInit() {

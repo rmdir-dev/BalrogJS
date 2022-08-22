@@ -10,7 +10,6 @@ import {ActivatedRoute} from "../../../framework/routing/activated-route";
 @component({
     name: 'item-form-component',
     template: 'item-form-component.html',
-    dirname: __dirname
 })
 export class ItemFormComponent extends Component {
     namectl: FormControl;
@@ -26,7 +25,7 @@ export class ItemFormComponent extends Component {
         private router: Router,
         private activatedRoute: ActivatedRoute,
     ) {
-        super('div');
+        super();
     }
     
     onInit() {

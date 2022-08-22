@@ -1,5 +1,4 @@
-import {component, Component} from "../../../framework/components/component";
-import {ItemService} from "../../core/services/item-service";
+import {Component, component} from "../../../framework/components/component";
 import {
     ButtonType,
     ColumnType,
@@ -7,29 +6,28 @@ import {
     TableConfig
 } from "../../core/components/table/table-component/table-component";
 import {Item} from "../../core/models/item-model";
-import {Entity} from "../../core/models/entity-model";
-import {Router} from "../../../framework/routing/router";
-import {Validators} from "../../../framework/forms/validators/validators";
+import {ItemService} from "../../core/services/item-service";
 import {BasketService} from "../../core/services/basket-service";
+import {Router} from "../../../framework/routing/router";
+import {Entity} from "../../core/models/entity-model";
+import {map} from "rxjs";
 
 @component({
-    name: 'item-list-component',
-    template: 'item-list-component.html',
+    name: 'basket-component',
+    template: 'basket-component.html',
 })
-export class ItemListComponent extends Component
-{
+export class BasketComponent extends Component {
     tableConfig: TableConfig;
     items: Array<Item>;
 
     constructor(
-        private itemService: ItemService,
         private basketService: BasketService,
         private router: Router,
     ) {
         super();
     }
 
-    onInit(): void {
+    onInit() {
         this.tableConfig = {
             sort: {
                 sortValueName: 'id',
@@ -38,27 +36,26 @@ export class ItemListComponent extends Component
             columns: [
                 {
                     columnName: 'Id',
-                    value: 'id',
+                    value: 'item.id',
                     type: ColumnType.DATA
                 },
                 {
                     columnName: 'name',
-                    value: 'name',
+                    value: 'item.name',
                     type: ColumnType.DATA
                 },
                 {
                     columnName: 'Price',
-                    value: 'price',
+                    value: 'item.price',
                     type: ColumnType.DATA
                 },
                 {
                     columnName: 'Quantity',
-                    value: 'quantity',
-                    type: ColumnType.DATA
-                },
-                {
-                    columnName: 'Ajouter',
-                    valueCb: (data) => '1',
+                    valueCb: (data) => {
+                        const basketItem = data as Item;
+
+                        return basketItem.quantity.toString();
+                    },
                     type: ColumnType.FORM,
                     formName: 'quantity'
                 },
@@ -78,10 +75,11 @@ export class ItemListComponent extends Component
                 ],
                 formSubmit: (event) => console.log(event)
             },
-            findDataCb: () => this.itemService.findAll(),
+            findDataCb: () => this.basketService.getBasket()
+                .pipe(map((basket) => basket.items)),
             actions: [
                 {
-                    actionName: "Add to basket",
+                    actionName: "Update basket",
                     actionCb: (item: Entity) =>
                     {
                         this.basketService.addToBasket(item as Item)
@@ -98,28 +96,7 @@ export class ItemListComponent extends Component
                     },
                     type: ButtonType.SUBMIT
                 },
-                {
-                    actionName: "Edit",
-                    actionCb: (item: Entity) =>
-                    {
-                        console.log(item);
-                        this.router.goToRoute(`/items/${item.id}/edit`);
-                    },
-                    type: ButtonType.SUCCESS
-                },
-                {
-                    actionName: "Info",
-                    actionCb: (item: Entity) =>
-                    {
-                        console.log(item);
-                        this.router.goToRoute(`/items/${item.id}`);
-                    },
-                    type: ButtonType.SUCCESS
-                },
             ]
         }
-    }
-
-    onDestroy() {
     }
 }

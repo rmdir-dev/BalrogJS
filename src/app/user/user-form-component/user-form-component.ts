@@ -10,7 +10,6 @@ import {User} from "../../core/models/user-model";
 @component({
     name: 'user-form-component',
     template: 'user-form-component.html',
-    dirname: __dirname
 })
 export class UserFormComponent extends Component {
     usernamectl: FormControl;
